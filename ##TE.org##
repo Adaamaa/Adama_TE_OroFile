@@ -1,0 +1,931 @@
+#+ Computational systems Biology
+#+ Student Note Book
+#+ By Adama R Tukuli
+
+
+
+#install.packages('deSolve')
+
+library(deSolve)
+
+################################################################################
+
+* SYSTEM 3
+
+################################################################################
+
+parameters <- c(k_r = 0.0005, k_f = 0.005)
+
+state      <- c(A=1000, B=500, C=0, E=100)
+
+Concentration <- function(t,state,parameters){
+
+	with(as.list(c(state,parameters)),{
+
+		dA <- 0
+
+		dB <- k_r*C*E - k_f*B*E
+
+		dC <- k_f*B*E - k_r*C*E
+
+		dE <- 0
+
+		
+
+		list(c(dA,dB,dC,dE))
+
+	})
+
+}
+
+
+
+times <- seq(0,100,by = 0.01)
+
+out   <- ode(y = state, times = times, func=Concentration, parms=parameters)
+
+
+
+par(oma=c(0,0,3,0))
+
+plot(out[,"time"],out[,"A"],type='l',col='red',xlab = "time",ylab="Concentration",ylim=c(0,1010))
+
+lines(out[,"time"],out[,"B"],col='blue')
+
+lines(out[,"time"],out[,"C"],col='black')
+
+lines(out[,"time"],out[,"E"],col='green')
+
+mtext(outer = TRUE, side=3,"Concentration of A,B,C,E in ODE System",cex=1.0)
+
+plot(output[,"B"],output[,"C"],pch=".",xlab="B",ylab="C")
+
+
+
+################################################################################
+
+* SYSTEM 2
+
+################################################################################
+
+parameters_2    <- c(k_r=0.0025, k_f=0.005)
+
+state_2         <- c(A=5, C=0, D=0, E=1.5)
+
+Concentration_2 <- function(t, state_2, parameters_2){
+
+	with(as.list(c(state_2, parameters_2)),{
+
+		dA <- k_r*C*D*E - k_f*(A^3)*E
+
+		dC <- k_f*(A^3)*E - k_r*C*D*E
+
+		dD <- k_f*(A^3)*E - k_r*C*D*E
+
+		dE <- 0
+
+		list(c(dA,dC,dD,dE))
+
+	})
+
+}
+
+
+
+times_2 <- seq(0,100,by = 0.01)
+
+out_2   <- ode(y = state_2, times = times_2, func=Concentration_2, parms=parameters_2)
+
+head(out_2)
+
+par(oma=c(0,0,3,0))
+
+plot(out_2[,"time"],out_2[,"A"],type='l',col='red',xlab ="time",ylab="Concentration",ylim=c(0,7))
+
+lines(out_2[,"time"],out_2[,"C"],col='blue')
+
+lines(out_2[,"time"],out_2[,"D"],col='black')
+
+lines(out_2[,"time"],out_2[,"E"],col='green')
+
+mtext(outer = TRUE, side=3,"Concentration of A,C,D,E in ODE System",cex=1.0)
+
+plot(out_2[,"A"],out_2[,"C"],pch=".",xlab="A",ylab="C")
+
+
+#install.packages(deSolve)
+
+library(deSolve)
+
+
+
+###############################################
+
+* TE4/SYSTEM 3
+
+###############################################
+
+system3 <- function(t,state,parameters){
+
+	with(as.list(c(state,parameters)),{
+
+		dA <- 0
+
+		dB <- k_r*C*E - k_f*B*E
+
+		dC <- k_f*B*E - k_r*C*E
+
+		dE <- 0		
+
+		list(c(dA,dB,dC,dE))
+
+	})
+
+}
+
+
+
+t          <- seq(0,100,1)
+
+
+
+###############################################
+
+#CHANGE B, C=0
+
+###############################################
+
+parameters <- c(k_r=0.0001,k_f=0.0001)
+
+state      <- c(A=1000,B=0,C=0,E=100)
+
+o          <- ode(y=state,times=t,func=system3,parms=parameters)
+
+plot(o[,"time"],o[,"A"],type='l',col='red',xlab='Time',ylab='Concentration',ylim=c(0,1005))
+
+lines(o[,"time"],o[,"B"],col='blue',lty=1)
+
+lines(o[,"time"],o[,"C"],col='black',lty=1)
+
+lines(o[,"time"],o[,"E"],col='green')
+
+for(i in seq(50,500,50)){
+
+	state <- c(A=1000,B=i,C=0,E=100)
+
+	o     <- ode(y=state,times=t,func=system3,parms=parameters)
+
+	lines(o[,"time"],o[,"B"],col='blue',lty=1)
+
+	lines(o[,"time"],o[,"C"],col='black',lty=1)
+
+}
+
+mtext(outer = TRUE, side=3,"Step-change in B, ODE System 3",cex=1.0) 
+
+legend(0,950,c("A","B","C","E"),col=c("red","blue","black","green"),lty=1)
+
+
+
+
+
+###############################################
+
+* CHANGE C, B=0
+
+###############################################
+
+parameters <- c(k_r=0.0001,k_f=0.0001)
+
+state      <- c(A=1000,B=0,C=0,E=100)
+
+o          <- ode(y=state,times=t,func=system3,parms=parameters)
+
+plot(o[,"time"],o[,"A"],type='l',col='red',xlab='Time',ylab='Concentration',ylim=c(0,1005))
+
+lines(o[,"time"],o[,"B"],col='blue',lty=1)
+
+lines(o[,"time"],o[,"C"],col='black',lty=1)
+
+lines(o[,"time"],o[,"E"],col='green')
+
+for(i in seq(50,500,50)){
+
+	state <- c(A=1000,B=0,C=i,E=100)
+
+	o     <- ode(y=state,times=t,func=system3,parms=parameters)
+
+	lines(o[,"time"],o[,"B"],col='blue',lty=1)
+
+	lines(o[,"time"],o[,"C"],col='black',lty=1)
+
+}
+
+legend(0,950,c("A","B","C","E"),col=c("red","blue","black","green"),lty=1)
+
+mtext(side=3,"Step-change in C, ODE System 3",cex=1.0) 
+
+
+
+
+
+###############################################
+
+* CHANGE K_f
+
+###############################################
+
+state      <- c(A=1000,B=500,C=0,E=100)
+
+parameters <- c(k_r=0.00001,k_f=0.00001)
+
+plot(o[,"time"],o[,"A"],type='l',col='red',xlab='Time',ylab='Concentration',ylim=c(0,1005))
+
+lines(o[,"time"],o[,"B"],col='blue',lty=1)
+
+lines(o[,"time"],o[,"C"],col='black',lty=1)
+
+lines(o[,"time"],o[,"E"],col='green')
+
+for(i in seq(0.00002,0.0001,0.00001)){
+
+	parameters <- c(k_r=0.00001,k_f=i)
+
+	o          <- ode(y=state,times=t,func=system3,parms=parameters)
+
+	lines(o[,"time"],o[,"B"],col='blue',lty=2)
+
+	lines(o[,"time"],o[,"C"],col='black',lty=2)
+
+}
+
+legend(0,950,c("A","B","C","E"),col=c("red","blue","black","green"),lty=1)
+
+mtext(side=3,"Step-change in K_f, ODE System 3",cex=1.0) 
+
+
+
+
+
+###############################################
+
+* CHANGE K_r
+
+###############################################
+
+state      <- c(A=1000,B=500,C=0,E=100)
+
+parameters <- c(k_r=0.00001,k_f=0.00001)
+
+plot(o[,"time"],o[,"A"],type='l',col='red',xlab='Time',ylab='Concentration',ylim=c(0,1005))
+
+lines(o[,"time"],o[,"B"],col='blue',lty=1)
+
+lines(o[,"time"],o[,"C"],col='black',lty=1)
+
+lines(o[,"time"],o[,"E"],col='green')
+
+for(i in seq(0.00002,0.0001,0.00001)){
+
+	parameters <- c(k_r=i,k_f=0.00001)
+
+	o          <- ode(y=state,times=t,func=system3,parms=parameters)
+
+	lines(o[,"time"],o[,"B"],col='blue',lty=2)
+
+	lines(o[,"time"],o[,"C"],col='black',lty=2)
+
+}
+
+legend(0,950,c("A","B","C","E"),col=c("red","blue","black","green"),lty=1)
+
+mtext(side=3,"Step-change in K_r, ODE System 3",cex=1.0)
+
+
+
+library(deSolve)
+
+
+
+* TE5/SYSTEMS 3&4
+
+system3_4_2 <- function(t,state,parameters){
+
+	with(as.list(c(state,parameters)),{
+
+		dA  <- 0
+
+		dB  <- kf4*C*E4 - kr4*B*E4 - kf3*B*E3 + kr3*C*E3
+
+		dC  <- kf3*B*E3 - kr3*C*E3 - kf4*C*E4 + kr4*F*G*B*E4
+
+		dD  <- 0
+
+		dE3 <- 0
+
+		dE4 <- 0
+
+		dF  <- kf4*C*E4 - kr4*F*E4
+
+		dG  <- kf4*C*E4 - kr4*G*E4
+
+		list(c(dA,dB,dC,dD,dE3,dE4,dF,dG))
+
+	})
+
+}
+
+
+
+t <- seq(0,100,0.1)
+
+s <- c(A=1000,B=500,C=0,D=980,F=5,G=0,E3=100,E4=100)
+
+p <- c(kf3=0.01,kr3=0.001,kf4=0.01,kr4=0.001)
+
+o <- ode(y=s,times=t,func=system3_4_2,parms=p)
+
+plot(o[,'time'],o[,'A'],type='l',col='red',xlab='Time',ylab='Concentration',ylim=c(-200,1005))
+
+lines(o[,'time'],o[,'B'],col='orange')
+
+lines(o[,'time'],o[,'C'],col='blue')
+
+lines(o[,'time'],o[,'D'],col='purple')
+
+lines(o[,'time'],o[,'F'],col='black')
+
+lines(o[,'time'],o[,'G'],col='green')
+
+mtext("TE5/ODE System 3&4", side=3,cex=1.0)
+
+legend(80,950,c("A","B","C","D","F","G"),col=c("red","orange","blue","purple","black","green"),lty=1)
+
+ 
+
+
+
+* SYSTEMS 3&4 (without feedback)
+
+system3_4_1 <- function(t,state,parameters){
+
+	with(as.list(c(state,parameters)),{
+
+		dA  <- 0
+
+		dB  <- 0
+
+		dC  <- kf3*B*E3 - kr3*C*E3 - kf4*C*E4 + kr4*F*G*H*E4
+
+		dD  <- 0
+
+		dE3 <- 0
+
+		dE4 <- 0
+
+		dF  <- kf4*C*E4 - kr4*F*E4
+
+		dG  <- kf4*C*E4 - kr4*G*E4
+
+		dH  <- kf4*C*E4 - kr4*H*E4
+
+		list(c(dA,dB,dC,dD,dE3,dE4,dF,dG,dH))
+
+	})
+
+}
+
+s <- c(A=1000,B=990,C=0,D=980,F=0,G=5,H=10,E3=100,E4=100)
+
+p <- c(kf3=0.001,kr3=0.001,kf4=0.001,kr4=0.001)
+
+o <- ode(y=s,times=t,func=system3_4_1,parms=p)
+
+plot(o[,'time'],o[,'A'],type='l',col='red',xlab='Time',ylab='Concentration',ylim=c(-200,1005))
+
+lines(o[,'time'],o[,'B'],col='orange')
+
+lines(o[,'time'],o[,'C'],col='blue')
+
+lines(o[,'time'],o[,'D'],col='purple')
+
+lines(o[,'time'],o[,'F'],col='black')
+
+lines(o[,'time'],o[,'G'],col='green')
+
+legend(80,950,c("A","B","C","D","F","G"),col=c("red","orange","blue","purple","black","green"),lty=1)
+
+mtext(outer = TRUE, side=3,"ODE System 3&4 (no loops)",cex=1.0) 
+
+
+
+#install.packages('deSolve')
+library(deSolve)
+library(RColorBrewer)
+library(pbapply)
+##
+
+* TE 5
+##
+All combination Plot/simulate/etc grid of
+
+grid = expand.grid(A=1000,
+                   B=seq(0,1000,100),
+                   C=0,
+                   E_3=10,
+                   E_4=10,
+                   k_3=10^seq(-2,2,1),
+                   k_4=10^seq(-2,2,1),
+                   ratio_base=1,
+                   D=1000,
+                   F=0,
+                   G=0,
+                   A_f=0,
+                   B_f=0,
+                   C_f=0,
+                   D_f=0,
+                   F_f=0,
+                   G_f=0,
+                   B_r=0,
+                   F_r=0)
+
+
+Concentration <- function(t,state,parameters){
+  with(as.list(c(state,parameters)),{
+    k_3r <- ratio_base;
+    k_3f <- ratio_base * k_3;
+    k_4r <- ratio_base;
+    k_4f <- ratio_base * k_4;
+    dA <- 0;
+    # A/D removed from eqs because saturated(to be discused)
+    # Produced by 3r and 4f, consumed by 3f and 4r
+    dB <- k_3r*C*E_3 + k_4f*C*E_4 - k_3f*E_3*B - k_4r*B*F*G*E_4;
+    # Produced by 3f and 4r, consumed by 3r and 4f
+    dC <- k_3f*B*E_3 + k_4r*B*F*G*E_4 - k_4f*C*E_4 - k_3r*C*E_3;
+    dE_3 <- 0;
+    dE_4 <- 0;
+    dD <- 0;
+    # Produced by 4f and consumed by 4r
+    dF <- k_4f*E_4*C - k_4r*B*F*G*E_3;
+    # Same
+    dG <- dF
+    
+    list(c(dA,dB,dC,dE_3,dE_4,dD,dF,dG))
+  })
+}
+
+#plot setup
+colorset = RColorBrewer::brewer.pal(3,"RdYlBu")
+
+pdf("TE5.pdf")
+results = t(pbapply(grid, 1, function(row) {
+  # For each row, split it to go into the existing funcion
+  # scrape out the final concentrations into the _f vars
+  # Save plots and name programmatically
+  # Hope simulation goes to t_eq for _f concentrations
+  
+  
+  state = row[c("A","B","C","E_3","E_4","D","F","G")]
+  parameters = row[c("k_3", "k_4", "ratio_base")]
+  
+  #Many plot to be generated
+  times <- seq(0,100,0.1)
+  # Exec
+  out   <- ode(y = state, times = times, func=Concentration, parms=parameters)
+  
+  # Extract last values
+  row[c("A_f","B_f","C_f","D_f","F_f","G_f")] = tail(out, n=1)[1,c("A","B","C","D","F","G")]
+  
+  row["B_r"] = row["B_f"] / (0.0000001+row["C_f"]);
+  row["F_r"] = row["F_f"] / (0.0000001+row["C_f"]);
+  
+  # Plot... to file?
+  #plot(out[,"time"],out[,"A"],type='l',lwd=2,col=colorset[1], xlab = "Time",ylab="Concentration",ylim=c(0,1010))
+  
+  plot(out[,"time"],out[,"B"],type='l',lwd=2,col=colorset[1],
+       xlab = "Time",ylab="Concentration",ylim=c(0,1010))
+  lines(out[,"time"],out[,"C"],lwd=2,col=colorset[2])
+  lines(out[,"time"],out[,"F"],lwd=2,col=colorset[3])
+  
+  #lines(out[,"time"],out[,"B"],lwd=2,col=colorset[2])
+  
+  #lines(out[,"time"],out[,"D"],lwd=2,col=colorset[4])
+  #lines(out[,"time"],out[,"E_3"],lwd=2,col=colorset[5])
+  #lines(out[,"time"],out[,"E_4"],lwd=2,col=colorset[6])
+  
+  #lines(out[,"time"],out[,"G"],lwd=2,col=colorset[8])
+  legend("topleft", inset=0.05,
+         legend=c("B","C","F"),
+         lty=1, cex=0.8, col=colorset, box.lty=0)
+  # So many matrixes to deal with
+  mtext(do.call(expression, list("Concentration",bquote(paste(
+    B[i], "=", .(row["B"]), " ",
+    k[3], "=", .(row["k_3"]), " ",
+    k[4], "=", .(row["k_4"]), " ",
+    "Accel=", .(row["ratio_base"]))))),side=3,line=1:0)
+  return(row);
+}))
+
+rbPal <- colorRampPalette(c('red','blue'))
+rbPal(10)[as.numeric(cut(results[,"C_f"],breaks = 10))]
+plot(results[,"B_r"], results[,"F_r"], col=rbPal(10)[as.numeric(cut(results[,"C_f"],breaks = 10))])
+
+plot(results[,"B_r"], results[,"F_r"], ylab = "F/C", xlab = "B/C", ylim = c(0,1.0), main = "Ratios of F, C, and B at t=100")
+
+dev.off()
+
+* TE5 to plot the system with shiny tool
+
+#### R script to plot TE5 modified
+
+library(deSolve)
+
+library(igraph)
+
+library(shiny)
+
+library(animation)
+
+
+
+#TE5/SYSTEMS 3&4
+
+system3_4_2 <- function(t,state,parameters){
+  
+  with(as.list(c(state,parameters)),{
+    
+    dA  <- 0
+    
+    dB  <- kf4*C*E4 - kr4*B*E4 - kf3*B*E3 + kr3*C*E3
+    
+    dC  <- kf3*B*E3 - kr3*C*E3 - kf4*C*E4 + kr4*F*G*B*E4
+    
+    dD  <- 0
+    
+    dE3 <- 0
+    
+    dE4 <- 0
+    
+    dF  <- kf4*C*E4 - kr4*F*E4
+    
+    dG  <- kf4*C*E4 - kr4*G*E4
+    
+    list(c(dA,dB,dC,dD,dE3,dE4,dF,dG))
+    
+  })
+  
+}
+
+
+
+t <- seq(0,100,0.1)
+
+s <- c(A=1000,B=500,C=100,D=0,F=0,G=0,E3=100,E4=100)
+
+p <- c(kf3=0.01,kr3=0.001,kf4=0.01,kr4=0.001)
+
+o <- ode(y=s,times=t,func=system3_4_2,parms=p)
+
+
+
+
+
+for(i in 1:50)#nrow(o))
+  
+{
+  
+  print(i)
+  
+  MAXim=1000
+  
+  concA  <- (o[i,'A']/MAXim)*10
+  
+  concB  <- (o[i,'B']/MAXim)*100
+  
+  concC  <- (o[i,'C']/MAXim)*100
+  
+  concD  <- (o[i,'D']/MAXim)*100
+  
+  concF  <- (o[i,'F']/MAXim)*100
+  
+  concG  <- (o[i,'G']/MAXim)*100
+  
+  concE3 <- (o[i,'E3']/MAXim)
+  
+  concE4 <- (o[i,'E4']/MAXim)
+  
+  
+  
+  nodes <- c('A','B','C','D','F','G','E3','E4','Kf3','Kr3','Kf4','Kr4','3','4')
+  
+  x <- c(0,0,10,10,20,20,4,16,4,4,16,16,4,16)
+  
+  y <- c(20,12,20,28,28,12,6,6,30,0,30,0,20,20)
+  
+  from <- c('A','B','3','C','D','4','4','4','E3','E4')
+  
+  to   <- c('3','3','C','4','4','F','G','B','3' ,'4')
+  
+  #size <-rep(i,14)
+  
+  size <- c(concA, concB, concC, concD, concF, concG, concE3, concE4, 10,10,10,10,10,10)
+  
+  print(size)
+  
+  shape<- c('circle','circle','circle','circle','circle','circle','circle',
+            
+            'circle','square','square','square','square','square','square')
+  
+  NodeList <- data.frame(nodes, x ,y, size, shape)
+  
+  width<-rep(i,10)
+  
+  EdgeList <- data.frame(from, to)
+  
+  a<- graph_from_data_frame(vertices = NodeList, d= EdgeList, directed = FALSE)
+  
+  plot(a)
+  
+  Sys.sleep(.1)
+  
+}
+
+
+* TE6 All combinaton and Histogram
+
+
+#install.packages('deSolve')
+
+#install.packages('numDeriv')
+
+library(deSolve)
+
+library(numDeriv)
+
+library(RColorBrewer)
+
+library(pbapply)
+
+
+# Plot/simulate/etc grid of
+
+
+
+grid = expand.grid(A=1000,
+                   
+                   B=seq(0,1000,100),
+                   
+                   C=0,
+                   
+                   E_3=10,
+                   
+                   E_4=10,
+                   
+                   k_3=10^seq(-2,2,1),
+                   
+                   k_4=10^seq(-2,2,1),
+                   
+                   ratio_base=1,
+                   
+                   D=1000,
+                   
+                   F=0,
+                   
+                   G=0,
+                   
+                   A_f=0,
+                   
+                   B_f=0,
+                   
+                   C_f=0,
+                   
+                   D_f=0,
+                   
+                   F_f=0,
+                   
+                   G_f=0,
+                   
+                   B_r=0,
+                   
+                   F_r=0)
+
+
+
+
+
+Concentration <- function(t,state,parameters){
+  
+  with(as.list(c(state,parameters)),{
+    
+    k_3r <- ratio_base;
+    
+    k_3f <- ratio_base * k_3;
+    
+    k_4r <- ratio_base;
+    
+    k_4f <- ratio_base * k_4;
+    
+    dA <- 0;
+    
+    # A/D removed from eqs because saturated(?)
+    
+    # Produced by 3r and 4f, consumed by 3f and 4r
+    
+    dB <- k_3r*C*E_3 + k_4f*C*E_4 - k_3f*E_3*B - k_4r*B*F*G*E_4;
+    
+    # Produced by 3f and 4r, consumed by 3r and 4f
+    
+    dC <- k_3f*B*E_3 + k_4r*B*F*G*E_4 - k_4f*C*E_4 - k_3r*C*E_3;
+    
+    dE_3 <- 0;
+    
+    dE_4 <- 0;
+    
+    dD <- 0;
+    
+    # Produced by 4f and consumed by 4r
+    
+    dF <- k_4f*E_4*C - k_4r*B*F*G*E_3;
+    
+    # Same
+    
+    dG <- dF
+    
+    
+    
+    list(c(dA,dB,dC,dE_3,dE_4,dD,dF,dG))
+    
+  })
+  
+}
+
+
+
+#plot setup
+
+#colorset = RColorBrewer::brewer.pal(3,"RdYlBu")
+
+colorset = RColorBrewer::brewer.pal(3,"RdBu")
+
+
+
+
+
+CE = function(x,h) {
+  
+  n = length(x)
+  
+  d = vector(length=n-2)
+  
+  for (i in 2:(n-1)) {
+    
+    d[i-1] = (x[i+1] - x[i-1])/(2*h)
+    
+  }
+  
+  return(d)
+  
+}
+
+
+
+
+pdf("TE6.pdf")
+
+results = t(pbapply(grid, 1, function(row) {
+  
+  # For each row, split it to go into the existing funcion
+  
+  # scrape out the final concentrations into the _f vars
+  
+  # Save plots and name programmatically
+  
+  # Hope simulation goes to t_eq for _f concentrations
+  
+  
+  
+    
+  state = row[c("A","B","C","E_3","E_4","D","F","G")]
+  
+  parameters = row[c("k_3", "k_4", "ratio_base")]
+  
+  
+  
+  #Many number of plots
+  
+  times <- seq(0,100,0.1)
+  
+  # Exec
+  
+  out   <- ode(y = state, times = times, func=Concentration, parms=parameters)
+  
+  
+  
+  # Extract last values
+  
+  row[c("A_f","B_f","C_f","D_f","F_f","G_f")] = tail(out, n=1)[1,c("A","B","C","D","F","G")]
+  
+  
+  
+  row["B_r"] = row["B_f"] / (0.0000001+row["C_f"]);
+  
+  row["F_r"] = row["F_f"] / (0.0000001+row["C_f"]);
+  
+  
+  
+  c_fd = CE(out[,"C"], times[2] - times[1])
+  
+  c_sd = CE(c_fd, times[2] - times[1])
+  
+    
+  c_fdsc = sum(diff(sign(c_fd)) != 0)
+  
+  c_sdsc = sum(diff(sign(c_sd)) != 0)
+  
+  # can I just append?
+  
+  row["c_fdsc"] = c_fdsc
+  
+  row["c_sdsc"] = c_sdsc
+  
+  
+  
+  # Plot... to file?
+  
+  #plot(out[,"time"],out[,"A"],type='l',lwd=2,col=colorset[1], xlab = "Time",ylab="Concentration",ylim=c(0,1010))
+  
+  par(bg='grey')
+  
+  plot(out[,"time"],out[,"B"],type='l',lwd=2,col=colorset[1],
+       
+       xlab = "Time",ylab="Concentration",ylim=c(0,1010))
+  
+  lines(out[,"time"],out[,"C"],lwd=2,col=colorset[2])
+  
+  lines(out[,"time"],out[,"F"],lwd=2,col=colorset[3])
+  
+  
+  
+  #lines(out[,"time"],out[,"B"],lwd=2,col=colorset[2])
+  
+  
+  
+  #lines(out[,"time"],out[,"D"],lwd=2,col=colorset[4])
+  
+  #lines(out[,"time"],out[,"E_3"],lwd=2,col=colorset[5])
+  
+  #lines(out[,"time"],out[,"E_4"],lwd=2,col=colorset[6])
+  
+  
+  
+  #lines(out[,"time"],out[,"G"],lwd=2,col=colorset[8])
+  
+  legend("topleft", inset=0.05,
+         
+         legend=c("B","C","F"),
+         
+         lty=1, cex=0.8, col=colorset, box.lty=0)
+  
+  # Many combination and matrixes to deal with
+  
+  mtext(do.call(expression, list("Concentration",bquote(paste(
+    
+    B[i], "=", .(row["B"]), " ",
+    
+    k[3], "=", .(row["k_3"]), " ",
+    
+    k[4], "=", .(row["k_4"]), " ",
+    
+    "Accel=", .(row["ratio_base"]))))),side=3,line=1:0)
+  
+  return(row);
+  
+}))
+
+
+
+rbPal <- colorRampPalette(c('red','blue'))
+
+rbPal(10)[as.numeric(cut(results[,"C_f"],breaks = 10))]
+
+
+
+plot(results[,"B_r"], results[,"F_r"], ylab = "F/C", xlab = "B/C", ylim = c(0,1.0), main = "Ratios of F, C, and B at t=100", col=rbPal(10)[as.numeric(cut(results[,"C_f"],breaks = 10))])
+
+
+
+hist(results[,"c_fdsc"], main="[c]' sign changes over simulation", xlab = "")
+
+
+
+hist(results[,"c_sdsc"], main="[c]'' sign changes over simulation", xlab = "")
+
+
+
+dev.off()
+
+* Thank you
+Internet
+Carlos
+Will
+Max
